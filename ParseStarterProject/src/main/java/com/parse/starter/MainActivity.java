@@ -9,11 +9,15 @@
 package com.parse.starter;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,11 +32,17 @@ import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,
+                                                                View.OnKeyListener{
 
     boolean signUpMode = true;
     TextView switchSignUpText;
     Button signUpButton;
+    EditText username;
+    EditText password;
+    ConstraintLayout backgroundConstraintLayout;
+    ImageView logoImageView;
+
 
     @Override
     public void onClick(View view) {
@@ -49,10 +59,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switchSignUpText.setText("Or Login");
             }
             Log.i("AppInfo", "Change signup mode");
+        } else if (view.getId() == R.id.background || view.getId() == R.id.logoImageView) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
     }
 
-    protected void signButtonOnClick() {
+    @Override
+    public boolean onKey(View view, int i, KeyEvent keyEvent) {
+        if (i == keyEvent.KEYCODE_ENTER && keyEvent.getAction() == keyEvent.ACTION_DOWN) {
+            signButtonOnClick(view);
+        }
+        return false;
+    }
+
+    protected void signButtonOnClick(View view) {
         if (signUpMode) {
             signUp();
         } else {
@@ -61,9 +82,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     protected void signUp() {
-        EditText username = (EditText) findViewById(R.id.nameText);
-        EditText password = (EditText) findViewById(R.id.passwordText);
-
         if (username == null || username.getText().toString().equals("") ||
                 password == null || password.getText().toString().equals("")) {
             Toast.makeText(this, "A username and password are needed.", Toast.LENGTH_SHORT).show();
@@ -88,9 +106,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     protected void signIn() {
-        EditText username = (EditText) findViewById(R.id.nameText);
-        EditText password = (EditText) findViewById(R.id.passwordText);
-
         if (username == null || username.getText().toString().equals("") ||
                 password == null || password.getText().toString().equals("")) {
             Toast.makeText(this, "A username and password are needed.", Toast.LENGTH_SHORT).show();
@@ -121,9 +136,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     switchSignUpText.setOnClickListener(this);
 
     signUpButton = (Button) findViewById(R.id.signUpButton);
+
+    backgroundConstraintLayout = (ConstraintLayout) findViewById(R.id.background);
+    backgroundConstraintLayout.setOnClickListener(this);
+
+    logoImageView = (ImageView) findViewById(R.id.logoImageView);
+    logoImageView.setOnClickListener(this);
+
+    username = (EditText) findViewById(R.id.nameText);
+
+    password = (EditText) findViewById(R.id.passwordText);
+    password.setOnKeyListener(this);
     
     ParseAnalytics.trackAppOpenedInBackground(getIntent());
   }
-
-
 }

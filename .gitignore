@@ -1,1 +1,3 @@
-/ParseStarterProject/build
+ParseStarterProject/build/
+build/
+.idea/
