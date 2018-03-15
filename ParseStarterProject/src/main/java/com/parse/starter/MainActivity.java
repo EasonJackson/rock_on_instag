@@ -31,6 +31,8 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
                                                                 View.OnKeyListener{
@@ -43,6 +45,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ConstraintLayout backgroundConstraintLayout;
     ImageView logoImageView;
 
+    public void showUserList() {
+        Intent intent = new Intent(getApplicationContext(), UserListActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     public void onClick(View view) {
@@ -97,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void done(ParseException e) {
                 if (e == null) {
                     Log.i("Sign Up", "Successful");
+                    showUserList();
                 } else {
                     Toast.makeText(MainActivity.this, "Sign up failure: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     Log.i("Sign Up", "Failed");
@@ -117,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void done(ParseUser user, ParseException e) {
                 if (user != null) {
                     Log.i("Login", "Successful");
+                    showUserList();
                 } else {
                     Toast.makeText(MainActivity.this, "Login failure: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     Log.i("Login", "Failed");
@@ -147,6 +155,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     password = (EditText) findViewById(R.id.passwordText);
     password.setOnKeyListener(this);
+
+//    if (ParseUser.getCurrentUser() != null) {
+//        showUserList();
+//    }
     
     ParseAnalytics.trackAppOpenedInBackground(getIntent());
   }
