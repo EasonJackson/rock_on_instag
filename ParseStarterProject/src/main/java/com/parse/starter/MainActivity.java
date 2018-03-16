@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,12 +38,13 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
                                                                 View.OnKeyListener{
 
-    boolean signUpMode = true;
+    static boolean signUpMode = true;
     TextView switchSignUpText;
     Button signUpButton;
     EditText username;
     EditText password;
     ConstraintLayout backgroundConstraintLayout;
+    RelativeLayout backgroundRelativeLayout;
     ImageView logoImageView;
 
     public void showUserList() {
@@ -147,6 +149,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     backgroundConstraintLayout = (ConstraintLayout) findViewById(R.id.background);
     backgroundConstraintLayout.setOnClickListener(this);
+    backgroundRelativeLayout = (RelativeLayout) findViewById(R.id.backgroundLayout);
+    backgroundRelativeLayout.setOnClickListener(this);
 
     logoImageView = (ImageView) findViewById(R.id.logoImageView);
     logoImageView.setOnClickListener(this);
